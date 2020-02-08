@@ -3,7 +3,10 @@ project(openGL_sandbox)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(openGL_sandbox src/main.cpp)
+add_executable(openGL_sandbox
+        src/glad/glad.c
+        src/main.cpp
+)
 
 add_subdirectory(dependencies/glfw-3.3.2)
 
