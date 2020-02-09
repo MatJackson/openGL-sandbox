@@ -49,7 +49,7 @@
 
 
 /**********************************************************************
- * Default shader programs
+ * Default Shader programs
  *********************************************************************/
 
 static const char* vertex_shader_text =
@@ -74,7 +74,7 @@ static const char* fragment_shader_text =
 "}\n";
 
 /**********************************************************************
- * Values for shader uniforms
+ * Values for Shader uniforms
  *********************************************************************/
 
 /* Frustum configuration */
@@ -108,7 +108,7 @@ static GLuint  map_line_indices[2*MAP_NUM_LINES];
 
 /* Store uniform location for the shaders
  * Those values are setup as part of the process of creating
- * the shader program. They should not be used before creating
+ * the Shader program. They should not be used before creating
  * the program.
  */
 static GLuint mesh;
@@ -118,7 +118,7 @@ static GLuint mesh_vbo[4];
  * OpenGL helper functions
  *********************************************************************/
 
-/* Creates a shader object of the specified type using the specified text
+/* Creates a Shader object of the specified type using the specified text
  */
 static GLuint make_shader(GLenum type, const char* text)
 {
@@ -135,7 +135,7 @@ static GLuint make_shader(GLenum type, const char* text)
         glGetShaderiv(shader, GL_COMPILE_STATUS, &shader_ok);
         if (shader_ok != GL_TRUE)
         {
-            fprintf(stderr, "ERROR: Failed to compile %s shader\n", (type == GL_FRAGMENT_SHADER) ? "fragment" : "vertex" );
+            fprintf(stderr, "ERROR: Failed to compile %s Shader\n", (type == GL_FRAGMENT_SHADER) ? "fragment" : "vertex" );
             glGetShaderInfoLog(shader, 8192, &log_length,info_log);
             fprintf(stderr, "ERROR: \n%s\n\n", info_log);
             glDeleteShader(shader);
@@ -162,11 +162,11 @@ static GLuint make_shader_program(const char* vs_text, const char* fs_text)
         fragment_shader = make_shader(GL_FRAGMENT_SHADER, fs_text);
         if (fragment_shader != 0u)
         {
-            /* make the program that connect the two shader and link it */
+            /* make the program that connect the two Shader and link it */
             program = glCreateProgram();
             if (program != 0u)
             {
-                /* attach both shader and link */
+                /* attach both Shader and link */
                 glAttachShader(program, vertex_shader);
                 glAttachShader(program, fragment_shader);
                 glLinkProgram(program);
@@ -174,7 +174,7 @@ static GLuint make_shader_program(const char* vs_text, const char* fs_text)
 
                 if (program_ok != GL_TRUE)
                 {
-                    fprintf(stderr, "ERROR, failed to link shader program\n");
+                    fprintf(stderr, "ERROR, failed to link Shader program\n");
                     glGetProgramInfoLog(program, 8192, &log_length, info_log);
                     fprintf(stderr, "ERROR: \n%s\n\n", info_log);
                     glDeleteProgram(program);
@@ -186,13 +186,13 @@ static GLuint make_shader_program(const char* vs_text, const char* fs_text)
         }
         else
         {
-            fprintf(stderr, "ERROR: Unable to load fragment shader\n");
+            fprintf(stderr, "ERROR: Unable to load fragment Shader\n");
             glDeleteShader(vertex_shader);
         }
     }
     else
     {
-        fprintf(stderr, "ERROR: Unable to load vertex shader\n");
+        fprintf(stderr, "ERROR: Unable to load vertex Shader\n");
     }
     return program;
 }
