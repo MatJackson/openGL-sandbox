@@ -1,7 +1,3 @@
-//
-// Created by MJ on 2020-02-08.
-//
-
 #ifndef OPENGL_SANDBOX_SHADER_H
 #define OPENGL_SANDBOX_SHADER_H
 

@@ -1,7 +1,3 @@
-//
-// Created by MJ on 2020-02-08.
-//
-
 #include "Shader.h"
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath) {
