@@ -11,6 +11,7 @@
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
+void processRotationToggle(GLFWwindow* window, float &toggle);
 
 // settings
 const unsigned int SCR_WIDTH = 800;
@@ -123,7 +124,7 @@ int main() {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load image, create texture and generate mipmaps
-    data = stbi_load("../src/awesomeface.png", &width, &height, &nrChannels, 0);
+    data = stbi_load("../src/cat.png", &width, &height, &nrChannels, 0);
     if (data) {
         // note that the awesomeface.png has transparency and thus an alpha channel, so make sure to tell OpenGL the data type is of GL_RGBA
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -145,9 +146,12 @@ int main() {
     glViewport(0, 0, 800, 600);
 
     // Render Loop
+
+    float rotationDirection = 1.0f;
     while (!glfwWindowShouldClose(window)) {
         // Inputs
         processInput(window);
+        processRotationToggle(window, rotationDirection);
 
         // Rendering commands
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
@@ -159,10 +163,15 @@ int main() {
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
+        // create transformations
+        glm::mat4 transform = glm::mat4(1.0f); // make sure to initialize matrix to identity matrix first
+        transform = glm::rotate(transform, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, rotationDirection));
 
+        ourShader.use();
+        unsigned int transformLoc = glGetUniformLocation(ourShader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(transform));
 
         // Render rectangle
-        ourShader.use();
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
@@ -194,5 +203,11 @@ void processInput(GLFWwindow* window) {
 
     if (glfwGetKey(window, GLFW_KEY_F) == GLFW_PRESS) {
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+}
+
+void processRotationToggle(GLFWwindow* window, float &toggle) {
+    if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+        toggle = toggle * -1;
     }
 }
